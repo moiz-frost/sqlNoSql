@@ -1,9 +1,28 @@
-var express = require('express');
+var Express = require('express');
 var mongoose = require('mongoose');
-var customer = require('./model/customerModel')
+var customer = require('./model/customerModel');
+var Sequelize = require('sequelize');
+
+var pgConnection = new Sequelize(
+    'Test',
+    'postgres',
+    '03422688475',
+    {
+        host: 'localhost',
+        dialect: 'postgres',
+
+    }
+);
+
+var Article = pgConnection.define('article', {
+    title: Sequelize.STRING,
+    body: Sequelize.TEXT
+});
+
+pgConnection.sync();
 
 // Create an instance of express
-var app = express();
+var app = Express();
 
 
 // Create DB Connection
@@ -11,7 +30,7 @@ var dbConnection = 'mongodb://localhost:27017/test';
 mongoose.connect(dbConnection);
 
 // Define the location for static resources
-app.use(express.static('/'));
+app.use(Express.static('/'));
 
 // Port defined by gulp, else 3000
 var port = process.env.PORT || 3000;
